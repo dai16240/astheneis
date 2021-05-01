@@ -1,0 +1,30 @@
+{% if patients %}
+<div class="table-responsive" id="users">
+	<table class="table">
+	  <thead class="thead-light">
+	    <tr>
+	      <th class="sort" data-sort="id">#</th>
+	      <th class="sort" data-sort="first_name">Όνομα</th>
+	      <th class="sort" data-sort="last_name">Επώνυμο</th>
+	      <th class="sort" data-sort="phone">Τηλέφωνο</th>
+	      <th class="sort" data-sort="address">Διεύθυνση</th>
+	    </tr>
+	  </thead>
+	  <tbody class="list">
+	  	{% for p in patients %}
+	    <tr>
+	      <td class="id"><a href="{{url_for('view', pid=p.id)}}">{{p.id}}</a></td>
+	      <td class="first_name">{{p.first_name}}</td>
+	      <td class="last_name">{{p.last_name}}</td>
+	      <td class="phone">{{p.phone}}</td>
+	      <td class="address">{{p.address}}</td>
+	    </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
+</div>
+{% else %}
+<div class="mt-4 container-fluid">
+	<h1>Δεν υπάρχουν ασθενείς στη βάση δεδομένων.</h1>
+</div>
+{% endif %}

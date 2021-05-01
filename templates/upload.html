@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/dropzone.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/basic.css')}}">
+{% endblock %}
+
+{% block content %}
+{% if patient %}
+<div class="mt-4 container-fluid">
+	
+	<h6>Ανέβασμα αρχείων</h6>
+	<h2>{{patient.first_name}} {{patient.last_name}}</h2>
+
+	<form style="border-style: dashed; border-radius: .5rem;" action="{{url_for('upload', pid=patient.id)}}" class="mt-4 dropzone dz-clickable" id="my-awesome-dropzone">
+		<div class="fallback">
+		    <input name="file" type="file" multiple />
+	  	</div>
+	</form>
+
+</div>
+<a href="{{url_for('view', pid=patient.id)}}" class="btn btn-outline-secondary mt-4">Τέλος</a>
+{% else %}
+	<h1>O χρήστης που ζητήσατε δεν βρέθηκε!</h1>
+	<a href="{{url_for('search')}}" class="btn btn-outline-secondary mt-4">Πίσω</a>
+
+{% endif %}
+
+
+
+{% endblock %}
+
+{% block body_end %}
+<script src="{{url_for('static', filename='js/dropzone.js')}}"></script>
+<script type="text/javascript">
+
+	Dropzone.options.myAwesomeDropzone = {
+		paramName: "file",
+		dictDefaultMessage: "Αποθέστε τα αρχεία εδώ.",
+		dictFileTooBig: "Το αρχείο είναι πολύ μεγάλο.",
+		init: function() {
+		    this.on("queuecomplete", function(file) {
+			  window.location = "{{url_for('view', pid=patient.id)}}";
+			});
+		  }
+	};
+
+</script>
+{% endblock %}

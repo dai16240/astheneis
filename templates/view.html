@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if patient %}
+<a href="#" class="btn btn-outline-danger mt-3 mr-3 float-right" data-toggle="modal" data-target="#confirmModal">Διαγραφή</a>
+<a href="{{url_for('edit', pid=patient.id)}}" class="btn btn-outline-warning mt-3 mr-3 float-right">Επεξεργασία</a>
+
+<!-- Modal -->
+<form action="{{url_for('delete', pid=patient.id)}}" method="POST">
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="confirmModalLabel">Διαγραφή ασθενούς</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Είστε σίγουροι;
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Ακύρωση</button>
+        <button type="submit" class="btn btn-outline-danger">Διαγραφή</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+{% endif %}
+
+<div class="container-fluid mt-5">
+	{% if patient %}
+
+
+		
+		<label>Όνομα</label>
+		<h1>{{patient.first_name}}</h1>
+		
+		<label>Eπώνυμο</label>
+		<h1>{{patient.last_name}}</h1>
+		
+		<label>Tηλέφωνο</label>
+		<h1>{{patient.phone}}</h1>
+		
+		<label>Διεύθυνση</label>
+		<h1>{{patient.address}}</h1>
+		
+		{% if files %}
+		<div class="list-group mt-4 mb-4">
+			<h6>Αρχεία</h6>
+			{% for f in files %}
+			{% set src = "uploads/" ~ patient.id ~ "/" ~ f %}
+		  <a href="{{url_for('static', filename=src)}}" class="list-group-item list-group-item-action">{{f}}</a>
+			{% endfor %}
+		</div>
+		{% else %}
+		<h6 class="mt-4 mb-4">Δεν υπάρχουν ανεβασμένα αρχεία.</h6>
+		{% endif %}
+
+	{% else %}
+		<h1>O χρήστης που ζητήσατε δεν βρέθηκε!</h1>
+	{% endif %}
+
+	<a href="{{url_for('search')}}" class="btn btn-outline-secondary mt-4">Πίσω</a>
+	{% if patient %}
+	<a href="{{url_for('upload', pid=patient.id)}}" class="btn btn-outline-success float-right mt-4">Ανέβασμα αρχείων</a>
+	{% endif %}
+</div>
+
+{% endblock content %}
